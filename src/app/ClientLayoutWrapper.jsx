@@ -5,6 +5,7 @@ import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@cl
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/footer/footer";
 import { useUser } from "@clerk/nextjs";
+import UserSync from "../components/UserSync";
 
 
 export default function ClientLayoutWrapper({ children }) {
@@ -12,34 +13,37 @@ export default function ClientLayoutWrapper({ children }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  if (isHome) {
-    return <main>{children}</main>;
-  }
-
-  // For other pages, show full layout
+  // Add UserSync component to sync user data with our database
   return (
     <>
-      <header className="flex bg-gray-800 justify-end items-center p-4 gap-4 h-16">
-        <SignedOut>
-          <SignInButton className="text-white"/>
-          <SignUpButton />
-        </SignedOut>
-        <SignedIn>
-        <div className="flex">
-          <div className="ml-[20%] flex items-center gap-2 text-white">
-            Welcome, {user?.fullName}
-            <UserButton />
+      <UserSync />
+      {isHome ? (
+        <main>{children}</main>
+      ) : (
+        <>
+          <header className="flex bg-gray-800 justify-end items-center p-4 gap-4 h-16">
+            <SignedOut>
+              <SignInButton className="text-white"/>
+              <SignUpButton />
+            </SignedOut>
+            <SignedIn>
+            <div className="flex">
+              <div className="ml-[20%] flex items-center gap-2 text-white">
+                Welcome, {user?.fullName}
+                <UserButton />
+              </div>
+            </div>
+            </SignedIn>
+          </header>
+
+          <div className="flex">
+            <Sidebar />
+            <main className="w-full p-6">{children}</main>
           </div>
-        </div>
-        </SignedIn>
-      </header>
 
-      <div className="flex">
-        <Sidebar />
-        <main className="w-full p-6">{children}</main>
-      </div>
-
-      <Footer />
+          <Footer />
+        </>
+      )}
     </>
   );
 }

@@ -23,8 +23,18 @@ export default function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!fullName) {
+    if (!fullName.trim()) {
       alert("Full name is required");
+      return;
+    }
+
+    if (fullName.split(" ").length < 2) {
+      alert("Please provide both first and last names");
+      return;
+    }
+
+    if (password && password.length < 8) {
+      alert("Password must be at least 8 characters long");
       return;
     }
 
@@ -32,35 +42,40 @@ export default function EditProfile() {
     setMessage(null);
 
     try {
-      // Update name and password in Clerk
+      // update name in clerk
       await user.update({
-        firstName: fullName.split(" ")[0], // Update first name
-        lastName: fullName.split(" ").slice(1).join(" "), // Update last name
-        password: password || undefined, // Only update password if provided
+        firstName: fullName.split(" ")[0], // update first name
+        lastName: fullName.split(" ").slice(1).join(" "), // update last name
       });
 
-      setMessage("Profile updated successfully");
+      // Handle password updates separately
+      if (password) {
+        await user.startPasswordReset(); // Trigger Clerk's password reset flow
+        setMessage(
+          "Name updated successfully. A password reset email has been sent."
+        );
+      } else {
+        setMessage("Profile updated successfully");
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
-      setMessage("Failed to update profile");
+      setMessage(error.message || "Failed to update profile");
     } finally {
       setLoading(false);
     }
   };
 
   if (!isLoaded) {
-    return <div>Loading...</div>; // Show a loading state while Clerk loads the user
+    return <div>Loading...</div>;
   }
 
   return (
     <div className="flex min-h-screen bg-gray-200">
-      {/* Right Column: Edit Profile */}
       <div className="w-full bg-white p-6">
         <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center mt-8">
           Edit Profile
         </h2>
 
-        {/* Profile Edit Form */}
         <form onSubmit={handleSubmit} className="space-y-4 ml-50">
           {/* Full Name Input */}
           <div>
@@ -76,6 +91,7 @@ export default function EditProfile() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -127,7 +143,17 @@ export default function EditProfile() {
           </div>
 
           {/* Feedback Message */}
-          {message && <p className="text-center text-red-600 mt-4">{message}</p>}
+          {message && (
+            <p
+              className={`text-center mt-4 ${
+                message.toLowerCase().includes("success")
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
+            >
+              {message}
+            </p>
+          )}
 
           <DebugToken />
         </form>

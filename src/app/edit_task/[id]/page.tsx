@@ -57,7 +57,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
         throw new Error("Failed to update task");
       }
       alert("Task updated successfully");
-      router.push("/");
+      router.push("/my_tasks"); // Redirect to '/my_tasks' after successful update
     } catch (error) {
       console.error("Error updating task:", error);
       alert("Failed to update task");
@@ -70,7 +70,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
         <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center mt-8">
           Update Task
         </h2>
-        <form onSubmit={handleUpdate} className="space-y-4">
+        <form onSubmit={handleUpdate} className="space-y-4 ml-50">
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700">
               Title
@@ -80,8 +80,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
               type="text"
               value={task.title}
               onChange={(e) => setTask({ ...task, title: e.target.value })}
-              className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
+              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
@@ -92,7 +91,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
               id="description"
               value={task.description}
               onChange={(e) => setTask({ ...task, description: e.target.value })}
-              className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={5}
               required
             ></textarea>

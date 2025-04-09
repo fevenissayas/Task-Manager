@@ -12,14 +12,18 @@ const pool = new Pool({
 const db = drizzle(pool);
 
 // GET /api/tasks/:id
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const taskId = parseInt(params.id, 10); // Convert ID to number
+    // Await the `params` object before using it
+    const resolvedParams = await context.params;
+    const taskId = parseInt(resolvedParams.id, 10); // Convert ID to number
+
     const task = await db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1);
     if (!task.length) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
     }
-    return NextResponse.json(task[0], { status: 200 });
+
+    return NextResponse.json(task[0]); // Return the task as JSON
   } catch (error) {
     console.error("Error fetching task:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -27,18 +31,24 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 // PUT /api/tasks/:id
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: { id: string } }) {
   try {
+    const { params } = context;
+    const taskId = parseInt(params.id, 10);
+
     const { userId } = getAuth(req);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const taskId = parseInt(params.id, 10);
     const body = await req.json();
 
-    if (!body.status) {
-      return NextResponse.json({ error: "Status is required" }, { status: 400 });
+    // Ensure at least one field is provided for update
+    if (!body.title && !body.description && !body.status) {
+      return NextResponse.json(
+        { error: "At least one field (title, description, or status) is required" },
+        { status: 400 }
+      );
     }
 
     // Fetch the task to ensure it exists and belongs to the user
@@ -51,17 +61,22 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ error: "Forbidden: Task does not belong to the user" }, { status: 403 });
     }
 
-    // Update the task status
-    await db.update(tasks).set({
-      status: body.status,
-    }).where(eq(tasks.id, taskId));
+    // Build the update payload dynamically
+    const updatePayload: Partial<{ title: string; description: string; status: string }> = {};
+    if (body.title) updatePayload.title = body.title;
+    if (body.description) updatePayload.description = body.description;
+    if (body.status) updatePayload.status = body.status;
 
-    return NextResponse.json({ message: "Task status updated successfully" }, { status: 200 });
+    // Update the task
+    await db.update(tasks).set(updatePayload).where(eq(tasks.id, taskId));
+
+    return NextResponse.json({ message: "Task updated successfully" }, { status: 200 });
   } catch (error) {
-    console.error("Error updating task status:", error);
+    console.error("Error updating task:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+
 // DELETE /api/tasks/:id
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {

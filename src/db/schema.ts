@@ -6,7 +6,7 @@ export const users = pgTable('users', {
   id: varchar('id', { length: 255 }).primaryKey(),
   email: varchar('email', { length: 255 }).notNull(),
   name: varchar('name', { length: 255 }).notNull(),
-  token: varchar('token', { length: 500 }),
+  token: varchar('token', { length: 500 })
 });
 
 export const tasks = pgTable('tasks', {
