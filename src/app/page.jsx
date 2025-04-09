@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-white px-4">
       <div className="text-center space-y-6 max-w-xl">
-        <h1 className="text-4xl font-bold text-blue-800">Hi, 👋</h1>
+        <h1 className="text-4xl font-bold text-blue-800">Hi, I'm Feven 👋</h1>
         <p className="text-lg text-gray-700">
           I'm building this project using{" "}
           <span className="font-semibold">Next.js</span> as part of my learning
