@@ -1,18 +1,20 @@
-// components/Sidebar.jsx
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs"; // Import Clerk's useUser hook
 
 export default function Sidebar() {
+  const { user } = useUser(); // Fetch user details
+
   return (
     <div className="w-1/5 bg-gray-200 shadow-lg p-6 flex flex-col items-center">
       {/* User Profile */}
       <div className="flex flex-col items-center mb-8">
-        <h1 className="text-black font-bold">👋</h1>
-        <h3 className="text-xl font-semibold text-black">Feven Issayas</h3>
-        <p className="text-sm text-gray-600">fevennissayas@gmail.com</p>
+        <h1 className="text-black font-bold">😊</h1>
+        <h3 className="text-xl text-black font-semibold">{user?.fullName || "Guest"}</h3>
+        <p className="text-sm text-gray-500">{user?.primaryEmailAddress?.emailAddress || "No Email"}</p>
       </div>
 
       {/* Navigation Links */}
-      <div className="mt-4 space-y-2 w-full">
+      <div className="space-y-2 w-full">
         <Link href="/my_tasks" className="block w-full text-center text-blue-600 hover:bg-gray-600 hover:text-white py-3 transition">
           My Tasks
         </Link>

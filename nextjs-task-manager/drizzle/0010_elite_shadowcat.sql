@@ -1,0 +1,1 @@
+CREATE TYPE "public"."task_status" AS ENUM('pending', 'in progress', 'completed');
