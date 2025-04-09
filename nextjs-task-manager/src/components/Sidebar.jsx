@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs"; // Import Clerk's useUser hook
+import { useUser, SignOutButton } from "@clerk/nextjs"; // Use SignOutButton instead of signOut
 
 export default function Sidebar() {
   const { user } = useUser(); // Fetch user details
@@ -15,18 +15,31 @@ export default function Sidebar() {
 
       {/* Navigation Links */}
       <div className="space-y-2 w-full">
-        <Link href="/my_tasks" className="block w-full text-center text-blue-600 hover:bg-gray-600 hover:text-white py-3 transition">
+        <Link
+          href="/my_tasks"
+          className="block w-full text-center text-blue-600 hover:bg-gray-600 hover:text-white py-3 transition"
+        >
           My Tasks
         </Link>
-        <Link href="/add_tasks" className="block w-full text-center text-blue-600 hover:bg-gray-600 hover:text-white py-3 transition">
+        <Link
+          href="/add_tasks"
+          className="block w-full text-center text-blue-600 hover:bg-gray-600 hover:text-white py-3 transition"
+        >
           Add Task
         </Link>
-        <Link href="/edit_profile" className="block w-full text-center text-blue-600 hover:bg-gray-600 hover:text-white py-3 transition">
+        <Link
+          href="/edit_profile"
+          className="block w-full text-center text-blue-600 hover:bg-gray-600 hover:text-white py-3 transition"
+        >
           Edit Profile
         </Link>
-        <Link href="/logout" className="block text-center text-red-600 hover:underline py-3">
-          Logout
-        </Link>
+
+        {/* Logout */}
+        <SignOutButton>
+          <button className="block text-center text-red-600 hover:underline py-3 w-full">
+            Logout
+          </button>
+        </SignOutButton>
       </div>
     </div>
   );
