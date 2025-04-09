@@ -7,7 +7,7 @@ export default function GetStarted() {
   const router = useRouter();
 
   const handleSignUpRedirect = () => {
-    router.push("/sign-up"); // Clerk’s default sign-up route
+    router.push("/sign-up");
   };
 
   return (

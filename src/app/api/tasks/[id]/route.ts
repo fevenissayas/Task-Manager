@@ -5,16 +5,17 @@ import { tasks } from "@/db/schema";
 import { eq } from "drizzle-orm/expressions";
 import { getAuth } from "@clerk/nextjs/server";
 
-// Set up the PostgreSQL connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 const db = drizzle(pool);
 
+type Context = { params: { id: string } };
+
 // GET /api/tasks/:id
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: Context) {
   try {
-    const taskId = parseInt(params.id, 10); // Convert ID to number
+    const taskId = parseInt(context.params.id, 10); // Convert ID to number
     const task = await db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1);
     if (!task.length) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
@@ -27,14 +28,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 // PUT /api/tasks/:id
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: Context) {
   try {
     const { userId } = getAuth(req); // Authenticate the user
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const taskId = parseInt(params.id, 10);
+    const taskId = parseInt(context.params.id, 10);
     const body = await req.json();
 
     if (!body.title || !body.description) {
@@ -63,10 +64,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 // DELETE /api/tasks/:id
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: Context) {
   try {
     const { userId } = getAuth(req); // Authenticate the user
-    const taskId = parseInt(params.id, 10);
+    const taskId = parseInt(context.params.id, 10);
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
