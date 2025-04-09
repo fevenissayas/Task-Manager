@@ -1,64 +1,68 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function UpdateTaskPage({ params }: { params: { id: string } }) {
+export default function UpdateTaskPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const { id } = params; // Fetch the task ID from the dynamic route
   const [task, setTask] = useState({ title: "", description: "" });
   const [isLoading, setIsLoading] = useState(true);
+  const [taskId, setTaskId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch the task details to prefill the form
-    const fetchTask = async () => {
+    // Unwrap params using React.use()
+    params.then((resolvedParams) => {
+      setTaskId(resolvedParams.id); // Extract the task ID
+    });
+  }, [params]);
+
+  useEffect(() => {
+    if (!taskId) return;
+
+    // Fetch the task details
+    async function fetchTask() {
       try {
-        const response = await fetch(`/api/tasks/${id}`);
+        const response = await fetch(`/api/tasks/${taskId}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch task");
+          throw new Error("Failed to fetch task details");
         }
         const data = await response.json();
-        setTask(data);
+        setTask({ title: data.title, description: data.description });
       } catch (error) {
         console.error("Error fetching task:", error);
+        router.push("/"); // Redirect to home on error
       } finally {
         setIsLoading(false);
       }
-    };
+    }
 
     fetchTask();
-  }, [id]);
+  }, [taskId, router]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
-      setIsLoading(true); // Set loading state to true during update
-      const response = await fetch(`/api/tasks/${id}`, {
+      const response = await fetch(`/api/tasks/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(task),
       });
-
       if (!response.ok) {
         throw new Error("Failed to update task");
       }
-
       alert("Task updated successfully");
-      router.push("/my_tasks");
+      router.push("/");
     } catch (error) {
       console.error("Error updating task:", error);
       alert("Failed to update task");
-    } finally {
-      setIsLoading(false); // Reset loading state
     }
   };
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="flex min-h-screen bg-gray-200">
@@ -66,14 +70,9 @@ export default function UpdateTaskPage({ params }: { params: { id: string } }) {
         <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center mt-8">
           Update Task
         </h2>
-
-        <form onSubmit={handleUpdate} className="space-y-4 ml-50">
-          {/* Title Input */}
+        <form onSubmit={handleUpdate} className="space-y-4">
           <div>
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
               Title
             </label>
             <input
@@ -81,39 +80,29 @@ export default function UpdateTaskPage({ params }: { params: { id: string } }) {
               type="text"
               value={task.title}
               onChange={(e) => setTask({ ...task, title: e.target.value })}
-              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-
-          {/* Description Input */}
           <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
               Description
             </label>
             <textarea
               id="description"
               value={task.description}
               onChange={(e) => setTask({ ...task, description: e.target.value })}
-              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={5}
               required
             ></textarea>
           </div>
-
-          {/* Submit Button */}
           <div className="text-center">
             <button
               type="submit"
-              className={`bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition duration-300 mt-10 ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={isLoading}
+              className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition duration-300"
             >
-              {isLoading ? "Updating..." : "Update Task"}
+              Update Task
             </button>
           </div>
         </form>

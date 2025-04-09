@@ -74,32 +74,39 @@ export default function MyTasks() {
 
   const handleStatusChange = async (taskId, newStatus) => {
     try {
+      // Fetch the authorization token
       const token = await getToken();
       if (!token) {
         throw new Error("Unable to fetch token.");
       }
-
+  
+      // Make the API request to update the task status
       const response = await fetch(`/api/tasks/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ status: newStatus }), // Send the new status
       });
-
+  
+      // Log the API response for debugging
+      console.log("API Response:", response);
       if (!response.ok) {
-        throw new Error("Failed to update task status");
+        const errorData = await response.json();
+        console.error("Error Data:", errorData);
+        throw new Error(errorData.error || "Failed to update task status");
       }
-
+  
       // Update the status in the local state
-      setTasks(
-        tasks.map((task) =>
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
           task.id === taskId ? { ...task, status: newStatus } : task
         )
       );
     } catch (error) {
-      setError(error.message);
+      console.error("Error:", error.message);
+      setError(error.message); // Store the error message
     }
   };
 
@@ -108,7 +115,7 @@ export default function MyTasks() {
       case "Completed":
         return "text-green-600";
       case "In Progress":
-        return "text-blue-600";
+        return "text-yellow-600";
       case "Pending":
       default:
         return "text-gray-600";
@@ -176,7 +183,7 @@ export default function MyTasks() {
                   <option value="Pending" className="text-gray-600">
                     Pending
                   </option>
-                  <option value="In Progress" className="text-blue-600">
+                  <option value="In Progress" className="text-yellow-600">
                     In Progress
                   </option>
                   <option value="Completed" className="text-green-600">

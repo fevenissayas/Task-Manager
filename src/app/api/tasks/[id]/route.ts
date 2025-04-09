@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { tasks } from "@/db/schema";
 import { eq } from "drizzle-orm/expressions";
 import { getAuth } from "@clerk/nextjs/server";
+import { title } from "process";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -28,7 +29,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 // PUT /api/tasks/:id
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { userId } = getAuth(req); // Authenticate the user
+    const { userId } = getAuth(req);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -36,10 +37,11 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     const taskId = parseInt(params.id, 10);
     const body = await req.json();
 
-    if (!body.title || !body.description) {
-      return NextResponse.json({ error: "Title and description are required" }, { status: 400 });
+    if (!body.status) {
+      return NextResponse.json({ error: "Status is required" }, { status: 400 });
     }
 
+    // Fetch the task to ensure it exists and belongs to the user
     const task = await db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1);
     if (!task.length) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
@@ -49,18 +51,17 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ error: "Forbidden: Task does not belong to the user" }, { status: 403 });
     }
 
+    // Update the task status
     await db.update(tasks).set({
-      title: body.title,
-      description: body.description,
+      status: body.status,
     }).where(eq(tasks.id, taskId));
 
-    return NextResponse.json({ message: "Task updated successfully" }, { status: 200 });
+    return NextResponse.json({ message: "Task status updated successfully" }, { status: 200 });
   } catch (error) {
-    console.error("Error updating task:", error);
+    console.error("Error updating task status:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
 // DELETE /api/tasks/:id
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
