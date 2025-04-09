@@ -1,9 +1,12 @@
 "use client";
 
-import { redirectToSignUp } from "@clerk/nextjs";
+import { useClerk } from "@clerk/nextjs";
 import React from "react";
 
-export default function GetStarted() {
+export default function HomePage() {
+  const { redirectToSignUp } = useClerk();
+
+
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-white px-4">
       <div className="text-center space-y-6 max-w-xl">
@@ -17,8 +20,8 @@ export default function GetStarted() {
         </p>
         <br />
         <button
+          onClick={() => redirectToSignUp({ redirectUrl: "/my_tasks" })}
           className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
-          onClick={() => redirectToSignUp({ redirectUrl: "http://localhost:3000" })}
         >
           Get Started
         </button>

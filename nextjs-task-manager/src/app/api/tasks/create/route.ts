@@ -1,4 +1,3 @@
-// /app/api/tasks/create/route.ts
 import { db } from "@/db/db";
 import { tasks } from "@/db/schema";
 import { NextResponse } from "next/server";
@@ -18,8 +17,9 @@ export async function POST(req: Request) {
   }
 
   try {
+    // Insert the task with the authenticated userId
     await db.insert(tasks).values({
-      userId,
+      userId, // From Clerk auth
       title,
       description,
     });

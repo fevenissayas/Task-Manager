@@ -6,6 +6,7 @@ export default function Sidebar() {
     <div className="w-1/5 bg-gray-200 shadow-lg p-6 flex flex-col items-center">
       {/* User Profile */}
       <div className="flex flex-col items-center mb-8">
+        <h1 className="text-black font-bold">👋</h1>
         <h3 className="text-xl font-semibold text-black">Feven Issayas</h3>
         <p className="text-sm text-gray-600">fevennissayas@gmail.com</p>
       </div>

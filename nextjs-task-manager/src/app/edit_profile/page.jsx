@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import DebugToken from '@/components/DebugToken';
 
 export default function EditProfile() {
   const [fullName, setFullName] = useState('Feven Issayas'); // default name
@@ -67,6 +68,7 @@ export default function EditProfile() {
               Save Changes
             </button>
           </div>
+          <DebugToken />
         </form>
       </div>
     </div>
