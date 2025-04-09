@@ -62,13 +62,11 @@ export default function UpdateTaskPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex min-h-screen bg-gray-200">
-      {/* Right Column: Update Task */}
       <div className="w-full bg-white p-6">
         <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center mt-8">
           Update Task
         </h2>
 
-        {/* Task Update Form */}
         <form onSubmit={handleUpdate} className="space-y-4 ml-50">
           {/* Title Input */}
           <div>

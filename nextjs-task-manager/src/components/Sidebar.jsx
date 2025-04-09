@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { useUser, SignOutButton } from "@clerk/nextjs"; // Use SignOutButton instead of signOut
+import { useUser, SignOutButton } from "@clerk/nextjs";
 
 export default function Sidebar() {
-  const { user } = useUser(); // Fetch user details
+  const { user } = useUser();
 
   return (
     <div className="w-1/5 bg-gray-200 shadow-lg p-6 flex flex-col items-center">
