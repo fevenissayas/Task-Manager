@@ -1,9 +1,15 @@
 "use client";
 
-import { redirectToSignUp } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function GetStarted() {
+  const router = useRouter();
+
+  const handleSignUpRedirect = () => {
+    router.push("/sign-up"); // Clerk’s default sign-up route
+  };
+
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-white px-4">
       <div className="text-center space-y-6 max-w-xl">
@@ -18,7 +24,7 @@ export default function GetStarted() {
         <br />
         <button
           className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
-          onClick={() => redirectToSignUp({ redirectUrl: "http://localhost:3000" })}
+          onClick={handleSignUpRedirect}
         >
           Get Started
         </button>
