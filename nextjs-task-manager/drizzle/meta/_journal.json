@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1744157592497,
+      "tag": "0000_simple_eternity",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1744158689231,
+      "tag": "0001_noisy_bill_hollister",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744158972746,
+      "tag": "0002_massive_the_executioner",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1744159869715,
+      "tag": "0003_good_silhouette",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1744160703901,
+      "tag": "0004_amused_warstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1744160933653,
+      "tag": "0005_bored_marvel_zombies",
+      "breakpoints": true
+    }
+  ]
+}
