@@ -27,7 +27,7 @@ export default function AddTask() {
     try {
       const token = await getToken();
 
-      const response = await fetch(`${BASE_URL}/api/tasks`, {
+      const response = await fetch(`/api/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@ export default function AddTask() {
             {error}
           </p>
         )}
-        
+
       </div>
     </div>
   );

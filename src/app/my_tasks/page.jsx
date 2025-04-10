@@ -21,7 +21,7 @@ export default function MyTasks() {
           throw new Error("Unable to fetch token.");
         }
 
-        const response = await fetch(`${BASE_URL}/api/tasks`, {
+        const response = await fetch(`/api/tasks`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default function MyTasks() {
         throw new Error("Unable to fetch token.");
       }
 
-      const response = await fetch(`${BASE_URL}/api/tasks/${taskId}`, {
+      const response = await fetch(`/api/tasks/${taskId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

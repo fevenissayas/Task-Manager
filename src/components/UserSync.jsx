@@ -20,7 +20,7 @@ export default function UserSync() {
       });
 
       try {
-        const res = await fetch(`${BASE_URL}/api/save-user`, {
+        const res = await fetch(`/api/save-user`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
