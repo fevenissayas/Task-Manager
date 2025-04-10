@@ -20,7 +20,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
 
     async function fetchTask() {
       try {
-        const response = await fetch(`api/tasks/${taskId}`);
+        const response = await fetch(`/api/tasks/${taskId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch task details");
         }
@@ -44,7 +44,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`api/tasks/${taskId}`, {
+      const response = await fetch(`/api/tasks/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
