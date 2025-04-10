@@ -11,13 +11,24 @@ const pool = new Pool({
 });
 const db = drizzle(pool);
 
+export async function OPTIONS(req: NextRequest) {
+  const res = new NextResponse();
+  try {
+    await runCorsMiddleware(req, res);
+    return res;
+  } catch (err) {
+    console.error("CORS error (OPTIONS):", err);
+    return NextResponse.json({ error: "CORS error" }, { status: 500 });
+  }
+}
+
 export async function GET(req: NextRequest) {
   const res = new NextResponse();
 
   try {
     await runCorsMiddleware(req, res);
   } catch (error) {
-    console.error("CORS error:", error);
+    console.error("CORS error (GET):", error);
     return NextResponse.json({ error: "CORS error" }, { status: 500 });
   }
 
@@ -46,11 +57,11 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const res = new NextResponse();
 
-  // Run CORS middleware
+  // cors middleware
   try {
     await runCorsMiddleware(req, res);
   } catch (error) {
-    console.error("CORS error:", error);
+    console.error("CORS error (POST):", error);
     return NextResponse.json({ error: "CORS error" }, { status: 500 });
   }
 
