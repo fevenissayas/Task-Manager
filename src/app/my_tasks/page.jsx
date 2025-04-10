@@ -21,7 +21,7 @@ export default function MyTasks() {
           throw new Error("Unable to fetch token.");
         }
 
-        const response = await fetch(`/api/tasks`, {
+        const response = await fetch(`${BASE_URL}/api/tasks`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
