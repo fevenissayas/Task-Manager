@@ -24,7 +24,7 @@ export default function EditTask({ task, onSave }: EditTaskProps) {
     e.preventDefault();
     const updatedTask = { ...task, title, description, status };
 
-    const response = await fetch(`${BASE_URL}/api/tasks/${task.id}`, {
+    const response = await fetch(`api/tasks/${task.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
