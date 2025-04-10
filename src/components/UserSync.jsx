@@ -7,8 +7,6 @@ export default function UserSync() {
   const { isSignedIn, user } = useUser();
   const [synced, setSynced] = useState(false);
 
-  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
   useEffect(() => {
     const syncUser = async () => {
       if (!user || synced) return;
@@ -20,7 +18,7 @@ export default function UserSync() {
       });
 
       try {
-        const res = await fetch(`${BASE_URL}/api/save-user`, {
+        const res = await fetch(`api/save-user`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -51,7 +49,7 @@ export default function UserSync() {
     } else {
       console.log('User not signed in or not loaded yet');
     }
-  }, [isSignedIn, user, synced, BASE_URL]);
+  }, [isSignedIn, user, synced]);
 
   return null;
 }

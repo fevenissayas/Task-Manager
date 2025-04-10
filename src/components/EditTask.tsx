@@ -18,8 +18,6 @@ export default function EditTask({ task, onSave }: EditTaskProps) {
   const [status, setStatus] = useState(task.status);
   const [isEditing, setIsEditing] = useState(false);
 
-  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const updatedTask = { ...task, title, description, status };

@@ -9,8 +9,6 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
   const [isLoading, setIsLoading] = useState(true);
   const [taskId, setTaskId] = useState<string | null>(null);
 
-  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
   useEffect(() => {
     params.then((resolvedParams) => {
       setTaskId(resolvedParams.id);
@@ -37,7 +35,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
     }
 
     fetchTask();
-  }, [taskId, router, BASE_URL]);
+  }, [taskId, router]);
 
   if (isLoading) {
     return <p>Loading...</p>;

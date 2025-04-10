@@ -11,8 +11,6 @@ export default function MyTasks() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -43,7 +41,7 @@ export default function MyTasks() {
     };
 
     fetchTasks();
-  }, [getToken, BASE_URL]);
+  }, [getToken]);
 
   const handleDelete = async (taskId) => {
     try {
