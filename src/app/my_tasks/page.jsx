@@ -69,7 +69,7 @@ export default function MyTasks() {
   };
 
   const handleEdit = (taskId) => {
-    router.push(`/edit_task/${taskId}`);
+    router.push(`edit_task/${taskId}`);
   };
 
   const handleStatusChange = async (taskId, newStatus) => {
