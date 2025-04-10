@@ -2,30 +2,26 @@ import { NextResponse, NextRequest } from "next/server";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { tasks } from "@/db/schema";
-import { eq } from "drizzle-orm/expressions"; // Import eq for filtering
-import { getAuth } from "@clerk/nextjs/server"; // Clerk for auth
+import { eq } from "drizzle-orm/expressions";
+import { getAuth } from "@clerk/nextjs/server";
 
-// Set up database connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 const db = drizzle(pool);
 
-// Handle GET requests
 export async function GET(req: NextRequest) {
-  // Use NextRequest type
-  const { userId } = getAuth(req); // Authenticate the user
+  const { userId } = getAuth(req);
 
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    // Fetch tasks for the authenticated user
     const userTasks = await db
       .select()
       .from(tasks)
-      .where(eq(tasks.userId, userId)); // Use eq for filtering
+      .where(eq(tasks.userId, userId));
 
     return NextResponse.json({ tasks: userTasks });
   } catch (error) {
@@ -37,9 +33,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// Handle POST requests
 export async function POST(req: NextRequest) {
-  // Use NextRequest type
   const { userId } = getAuth(req);
 
   console.log("server", userId);
@@ -51,7 +45,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // Validate the request body
     if (!body.title || !body.description) {
       return NextResponse.json(
         { error: "Title and description are required" },
@@ -59,14 +52,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Insert the new task into the database
     const newTask = {
       userId,
       title: body.title,
       description: body.description,
-      status: body.status || "pending", // Default status to 'pending'
+      status: body.status || "pending",
     };
-    const result = await db.insert(tasks).values(newTask).returning(); // Insert and return the new task
+    const result = await db.insert(tasks).values(newTask).returning();
 
     return NextResponse.json(
       { message: "Task created", task: result[0] },

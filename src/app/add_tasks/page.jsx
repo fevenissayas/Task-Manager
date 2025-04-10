@@ -1,23 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
-import { useAuth } from "@clerk/nextjs"; // Import Clerk for authentication
+import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 export default function AddTask() {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskStatus, setTaskStatus] = useState("Pending");
   const [error, setError] = useState(null);
-  const router = useRouter(); // Initialize the router
-  const { getToken } = useAuth(); // Get the token for API authentication
+  const router = useRouter();
+  const { getToken } = useAuth();
 
-  // Handle the task submission
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const handleAddTask = async (e) => {
     e.preventDefault();
     setError(null);
 
-    // Create a new task object
     const newTask = {
       title: taskTitle,
       description: taskDescription,
@@ -25,24 +25,21 @@ export default function AddTask() {
     };
 
     try {
-      // Get the Clerk token
       const token = await getToken();
 
-      // Send the task to the server
-      const response = await fetch("/api/tasks", {
+      const response = await fetch(`${BASE_URL}/api/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Send the token in the request
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newTask), // Send the task data
+        body: JSON.stringify(newTask),
       });
 
       if (!response.ok) {
         throw new Error("Failed to add task");
       }
 
-      // Redirect to the my_tasks page after successful addition
       router.push("/my_tasks");
     } catch (err) {
       setError(err.message);
@@ -51,13 +48,10 @@ export default function AddTask() {
 
   return (
     <div className="flex min-h-screen bg-gray-200">
-      {/* Right Column: Add Task Form */}
       <div className="w-full bg-white p-6 mx-auto rounded-md">
         <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center mt-6">
           Add New Task
         </h2>
-
-        {/* Task Form */}
         <form onSubmit={handleAddTask} className="space-y-4 ml-40">
           <div>
             <label
@@ -118,8 +112,18 @@ export default function AddTask() {
           </div>
         </form>
 
-        {/* Display errors if any */}
-        {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+        {error && (
+          <p
+            className={`text-center mt-4 ${
+              error.toLowerCase().includes("success")
+                ? "text-green-600"
+                : "text-red-600"
+            }`}
+          >
+            {error}
+          </p>
+        )}
+        
       </div>
     </div>
   );

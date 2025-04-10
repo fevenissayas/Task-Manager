@@ -14,16 +14,15 @@ const db = drizzle(pool);
 // GET /api/tasks/:id
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    // Await the `params` object before using it
     const resolvedParams = await context.params;
-    const taskId = parseInt(resolvedParams.id, 10); // Convert ID to number
+    const taskId = parseInt(resolvedParams.id, 10); //convert id to number
 
     const task = await db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1);
     if (!task.length) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
     }
 
-    return NextResponse.json(task[0]); // Return the task as JSON
+    return NextResponse.json(task[0]);
   } catch (error) {
     console.error("Error fetching task:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -86,7 +85,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-      
+
     const task = await db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1);
     if (!task.length) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });

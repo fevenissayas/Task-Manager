@@ -7,6 +7,8 @@ export default function UserSync() {
   const { isSignedIn, user } = useUser();
   const [synced, setSynced] = useState(false);
 
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   useEffect(() => {
     const syncUser = async () => {
       if (!user || synced) return;
@@ -18,7 +20,7 @@ export default function UserSync() {
       });
 
       try {
-        const res = await fetch('/api/save-user', {
+        const res = await fetch(`${BASE_URL}/api/save-user`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -33,13 +35,13 @@ export default function UserSync() {
         const data = await res.json();
         
         if (res.ok) {
-          console.log('✅ User synced with DB:', data);
+          console.log('User synced with DB:', data);
           setSynced(true);
         } else {
-          console.error('❌ Failed to sync user:', data);
+          console.error('Failed to sync user:', data);
         }
       } catch (err) {
-        console.error('❌ Sync error:', err);
+        console.error('Sync error:', err);
       }
     };
 
@@ -49,7 +51,7 @@ export default function UserSync() {
     } else {
       console.log('User not signed in or not loaded yet');
     }
-  }, [isSignedIn, user, synced]);
+  }, [isSignedIn, user, synced, BASE_URL]);
 
-  return null; // no UI needed
+  return null;
 }

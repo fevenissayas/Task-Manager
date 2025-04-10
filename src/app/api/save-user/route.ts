@@ -1,4 +1,3 @@
-// /api/save-user.ts
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db/db";
@@ -12,7 +11,6 @@ export async function POST(req: NextRequest) {
 
     console.log("user is being saved", userId, name, email);
 
-    // Ensure user is authenticated and required fields are present
     if (!userId || !email || !name) {
       console.error("Missing user info", { userId, email, name });
       return NextResponse.json({ error: "Missing user info" }, { status: 400 });

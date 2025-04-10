@@ -5,18 +5,18 @@ import { useUser } from "@clerk/nextjs";
 import DebugToken from "@/components/DebugToken";
 
 export default function EditProfile() {
-  const { user, isLoaded } = useUser(); // Fetch the current logged-in user
-  const [fullName, setFullName] = useState(""); // Name from Clerk
-  const [email, setEmail] = useState(""); // Email from Clerk
-  const [password, setPassword] = useState(""); // New password
-  const [message, setMessage] = useState(null); // Feedback message
-  const [loading, setLoading] = useState(false); // Submit button loading state
+  const { user, isLoaded } = useUser();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Pre-fill user details when the user is loaded
+
   useEffect(() => {
     if (isLoaded && user) {
-      setFullName(user.fullName || ""); // Use Clerk's fullName
-      setEmail(user.emailAddresses[0]?.emailAddress || ""); // Use Clerk's primary email
+      setFullName(user.fullName || "");
+      setEmail(user.emailAddresses[0]?.emailAddress || "");
     }
   }, [isLoaded, user]);
 
@@ -42,15 +42,13 @@ export default function EditProfile() {
     setMessage(null);
 
     try {
-      // update name in clerk
       await user.update({
-        firstName: fullName.split(" ")[0], // update first name
-        lastName: fullName.split(" ").slice(1).join(" "), // update last name
+        firstName: fullName.split(" ")[0],
+        lastName: fullName.split(" ").slice(1).join(" "),
       });
 
-      // Handle password updates separately
       if (password) {
-        await user.startPasswordReset(); // Trigger Clerk's password reset flow
+        await user.startPasswordReset();
         setMessage(
           "Name updated successfully. A password reset email has been sent."
         );
@@ -155,7 +153,6 @@ export default function EditProfile() {
             </p>
           )}
 
-          <DebugToken />
         </form>
       </div>
     </div>

@@ -13,7 +13,6 @@ export default function ClientLayoutWrapper({ children }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  // Add UserSync component to sync user data with our database
   return (
     <>
       <UserSync />

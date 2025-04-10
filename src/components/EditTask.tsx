@@ -18,12 +18,13 @@ export default function EditTask({ task, onSave }: EditTaskProps) {
   const [status, setStatus] = useState(task.status);
   const [isEditing, setIsEditing] = useState(false);
 
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const updatedTask = { ...task, title, description, status };
 
-    // Call the backend API to update the task
-    const response = await fetch(`/api/tasks/${task.id}`, {
+    const response = await fetch(`${BASE_URL}/api/tasks/${task.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

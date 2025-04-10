@@ -9,20 +9,20 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
   const [isLoading, setIsLoading] = useState(true);
   const [taskId, setTaskId] = useState<string | null>(null);
 
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   useEffect(() => {
-    // Unwrap params using React.use()
     params.then((resolvedParams) => {
-      setTaskId(resolvedParams.id); // Extract the task ID
+      setTaskId(resolvedParams.id);
     });
   }, [params]);
 
   useEffect(() => {
     if (!taskId) return;
 
-    // Fetch the task details
     async function fetchTask() {
       try {
-        const response = await fetch(`/api/tasks/${taskId}`);
+        const response = await fetch(`${BASE_URL}/api/tasks/${taskId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch task details");
         }
@@ -30,14 +30,14 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
         setTask({ title: data.title, description: data.description });
       } catch (error) {
         console.error("Error fetching task:", error);
-        router.push("/"); // Redirect to home on error
+        router.push("/");
       } finally {
         setIsLoading(false);
       }
     }
 
     fetchTask();
-  }, [taskId, router]);
+  }, [taskId, router, BASE_URL]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -46,7 +46,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/tasks/${taskId}`, {
+      const response = await fetch(`${BASE_URL}/api/tasks/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
         throw new Error("Failed to update task");
       }
       alert("Task updated successfully");
-      router.push("/my_tasks"); // Redirect to '/my_tasks' after successful update
+      router.push("/my_tasks");
     } catch (error) {
       console.error("Error updating task:", error);
       alert("Failed to update task");

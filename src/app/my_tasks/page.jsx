@@ -11,6 +11,8 @@ export default function MyTasks() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -19,7 +21,7 @@ export default function MyTasks() {
           throw new Error("Unable to fetch token.");
         }
 
-        const response = await fetch("/api/tasks", {
+        const response = await fetch(`${BASE_URL}/api/tasks`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -41,7 +43,7 @@ export default function MyTasks() {
     };
 
     fetchTasks();
-  }, [getToken]);
+  }, [getToken, BASE_URL]);
 
   const handleDelete = async (taskId) => {
     try {
@@ -50,7 +52,7 @@ export default function MyTasks() {
         throw new Error("Unable to fetch token.");
       }
 
-      const response = await fetch(`/api/tasks/${taskId}`, {
+      const response = await fetch(`${BASE_URL}/api/tasks/${taskId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +71,7 @@ export default function MyTasks() {
   };
 
   const handleEdit = (taskId) => {
-    router.push(`/edit_task/${taskId}`); // Redirect to the edit page for the task
+    router.push(`/edit_task/${taskId}`);
   };
 
   const handleStatusChange = async (taskId, newStatus) => {
@@ -79,7 +81,7 @@ export default function MyTasks() {
         throw new Error("Unable to fetch token.");
       }
   
-      const response = await fetch(`/api/tasks/${taskId}`, {
+      const response = await fetch(`${BASE_URL}/api/tasks/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +97,6 @@ export default function MyTasks() {
         throw new Error(errorData.error || "Failed to update task status");
       }
   
-      // Update the status in the local state
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task.id === taskId ? { ...task, status: newStatus } : task
@@ -103,7 +104,7 @@ export default function MyTasks() {
       );
     } catch (error) {
       console.error("Error:", error.message);
-      setError(error.message); // Store the error message
+      setError(error.message);
     }
   };
 
@@ -188,7 +189,6 @@ export default function MyTasks() {
                   </option>
                 </select>
 
-                {/* Delete Button */}
                 <button
                   onClick={() => handleDelete(task.id)}
                   className="absolute bottom-2 right-2 text-red-600 hover:text-red-800"
