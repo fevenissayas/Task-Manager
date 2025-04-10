@@ -50,66 +50,78 @@ export default function AddTask() {
         <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center mt-6">
           Add New Task
         </h2>
-        <form onSubmit={handleAddTask} className="space-y-4 ml-40">
-          <div>
-            <label
-              htmlFor="taskTitle"
-              className="block text-sm font-semibold text-gray-700"
-            >
-              Task Title
-            </label>
-            <input
-              type="text"
-              id="taskTitle"
-              value={taskTitle}
-              onChange={(e) => setTaskTitle(e.target.value)}
-              required
-              className="mt-2 w-200 px-4 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+        <form onSubmit={handleAddTask} className="space-y-6">
+          {/* Task Title Input */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <label
+                htmlFor="taskTitle"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Task Title
+              </label>
+              <input
+                type="text"
+                id="taskTitle"
+                value={taskTitle}
+                onChange={(e) => setTaskTitle(e.target.value)}
+                required
+                className="mt-2 w-full px-4 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 lg:text-lg lg:px-6"
+              />
+            </div>
           </div>
-
-          <div>
-            <label
-              htmlFor="taskDescription"
-              className="block text-sm font-semibold text-gray-700"
-            >
-              Description
-            </label>
-            <textarea
-              id="taskDescription"
-              value={taskDescription}
-              onChange={(e) => setTaskDescription(e.target.value)}
-              required
-              className="mt-2 w-200 px-4 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+  
+          {/* Task Description Textarea */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <label
+                htmlFor="taskDescription"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Description
+              </label>
+              <textarea
+                id="taskDescription"
+                value={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
+                required
+                className="mt-2 w-full px-4 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 lg:text-lg lg:px-6"
+                rows={4}
+              />
+            </div>
           </div>
-
-          <div>
-            <label
-              htmlFor="taskStatus"
-              className="block text-sm font-semibold text-gray-700"
-            >
-              Status
-            </label>
-            <input
-              type="text"
-              id="taskStatus"
-              value="Pending"
-              readOnly
-              className="mt-2 w-200 px-4 py-2 text-black bg-gray-100 border border-gray-300 rounded-md focus:outline-none cursor-not-allowed"
-            />
+  
+          {/* Task Status Input (Read-Only) */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <label
+                htmlFor="taskStatus"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Status
+              </label>
+              <input
+                type="text"
+                id="taskStatus"
+                value="Pending"
+                readOnly
+                className="mt-2 w-full px-4 py-2 text-black bg-gray-100 border border-gray-300 rounded-md focus:outline-none cursor-not-allowed lg:text-lg lg:px-6"
+              />
+            </div>
           </div>
-
-          <div>
+  
+          {/* Submit Button */}
+          <div className="flex justify-center">
             <button
               type="submit"
-              className="w-auto mt-18 px-5 block mx-auto bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition duration-300"
+              className="mt-6 px-5 bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition duration-300 inline-block"
             >
               Add Task
             </button>
           </div>
         </form>
-
+  
+        {/* Error/Feedback Message */}
         {error && (
           <p
             className={`text-center mt-4 ${
@@ -121,7 +133,6 @@ export default function AddTask() {
             {error}
           </p>
         )}
-        
       </div>
     </div>
   );

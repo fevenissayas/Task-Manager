@@ -68,36 +68,45 @@ export default function UpdateTaskPage({ params }: { params: Promise<{ id: strin
         <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center mt-8">
           Update Task
         </h2>
-        <form onSubmit={handleUpdate} className="space-y-4 ml-50">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-              Title
-            </label>
-            <input
-              id="title"
-              type="text"
-              value={task.title}
-              onChange={(e) => setTask({ ...task, title: e.target.value })}
-              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+        <form onSubmit={handleUpdate} className="space-y-6">
+          {/* Title Input */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                Title
+              </label>
+              <input
+                id="title"
+                type="text"
+                value={task.title}
+                onChange={(e) => setTask({ ...task, title: e.target.value })}
+                className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 lg:text-lg lg:px-6"
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-              Description
-            </label>
-            <textarea
-              id="description"
-              value={task.description}
-              onChange={(e) => setTask({ ...task, description: e.target.value })}
-              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows={5}
-              required
-            ></textarea>
+  
+          {/* Description Textarea */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <textarea
+                id="description"
+                value={task.description}
+                onChange={(e) => setTask({ ...task, description: e.target.value })}
+                className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 lg:text-lg lg:px-6"
+                rows={5}
+                required
+              ></textarea>
+            </div>
           </div>
-          <div className="text-center">
+  
+          {/* Submit Button */}
+          <div className="flex justify-center">
             <button
               type="submit"
-              className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition duration-300"
+              className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition duration-300 inline-block"
             >
               Update Task
             </button>

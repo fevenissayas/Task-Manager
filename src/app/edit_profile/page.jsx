@@ -73,73 +73,79 @@ export default function EditProfile() {
         <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center mt-8">
           Edit Profile
         </h2>
-
-        <form onSubmit={handleSubmit} className="space-y-4 ml-50">
+  
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Full Name Input */}
-          <div>
-            <label
-              htmlFor="fullName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 lg:text-lg lg:px-6"
+                required
+              />
+            </div>
           </div>
-
+  
           {/* Email (Static, not editable) */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              disabled
-              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
-            />
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                disabled
+                className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed lg:text-lg lg:px-6"
+              />
+            </div>
           </div>
-
+  
           {/* Password Input */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              New Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 px-4 py-2 w-200 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                New Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-2 px-4 py-2 w-full text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 lg:text-lg lg:px-6"
+              />
+            </div>
           </div>
-
+          <br />
           {/* Submit Button */}
-          <div className="text-center">
+          <div className="flex justify-center">
             <button
               type="submit"
-              className={`bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition duration-300 mt-10 ${
+              className={`bg-blue-600 text-white px-6 py-2 inline-block max-w-sm rounded-xl hover:bg-blue-700 transition duration-300 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              } lg:text-lg lg:px-6`}
               disabled={loading}
             >
               {loading ? "Saving..." : "Save Changes"}
             </button>
           </div>
-
+  
           {/* Feedback Message */}
           {message && (
             <p
@@ -152,7 +158,6 @@ export default function EditProfile() {
               {message}
             </p>
           )}
-
         </form>
       </div>
     </div>

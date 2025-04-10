@@ -27,8 +27,8 @@ export default function ClientLayoutWrapper({ children }) {
             </SignedOut>
             <SignedIn>
             <div className="flex">
-              <div className="ml-[20%] flex items-center gap-2 text-white">
-                Welcome, {user?.fullName}
+              <div className="ml-[10%] flex items-center gap-2 text-white">
+                Welcome, {user?.firstName}
                 <UserButton />
               </div>
             </div>
