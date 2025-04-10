@@ -74,23 +74,20 @@ export default function MyTasks() {
 
   const handleStatusChange = async (taskId, newStatus) => {
     try {
-      // Fetch the authorization token
       const token = await getToken();
       if (!token) {
         throw new Error("Unable to fetch token.");
       }
   
-      // Make the API request to update the task status
       const response = await fetch(`/api/tasks/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status: newStatus }), // Send the new status
+        body: JSON.stringify({ status: newStatus }),
       });
   
-      // Log the API response for debugging
       console.log("API Response:", response);
       if (!response.ok) {
         const errorData = await response.json();

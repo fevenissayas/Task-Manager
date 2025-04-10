@@ -33,17 +33,19 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 // PUT /api/tasks/:id
 export async function PUT(req: NextRequest, context: { params: { id: string } }) {
   try {
-    const { params } = context;
-    const taskId = parseInt(params.id, 10);
+    const resolvedParams = await context.params;
+
+    const taskId = parseInt(resolvedParams.id, 10);
+    // console.log(taskId);
 
     const { userId } = getAuth(req);
+    // console.log(userId);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
 
-    // Ensure at least one field is provided for update
     if (!body.title && !body.description && !body.status) {
       return NextResponse.json(
         { error: "At least one field (title, description, or status) is required" },
@@ -51,7 +53,6 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
       );
     }
 
-    // Fetch the task to ensure it exists and belongs to the user
     const task = await db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1);
     if (!task.length) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
@@ -61,13 +62,11 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
       return NextResponse.json({ error: "Forbidden: Task does not belong to the user" }, { status: 403 });
     }
 
-    // Build the update payload dynamically
     const updatePayload: Partial<{ title: string; description: string; status: string }> = {};
     if (body.title) updatePayload.title = body.title;
     if (body.description) updatePayload.description = body.description;
     if (body.status) updatePayload.status = body.status;
 
-    // Update the task
     await db.update(tasks).set(updatePayload).where(eq(tasks.id, taskId));
 
     return NextResponse.json({ message: "Task updated successfully" }, { status: 200 });
