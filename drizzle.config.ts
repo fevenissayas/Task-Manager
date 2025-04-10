@@ -1,6 +1,6 @@
 import { defineConfig } from "drizzle-kit";
 import * as dotenv from "dotenv";
-import { parse } from "pg-connection-string"; // Helper function to parse DATABASE_URL
+import { parse } from "pg-connection-string";
 
 dotenv.config();
 
