@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { tasks } from "@/db/schema";
 import { eq } from "drizzle-orm/expressions";
 import { getAuth } from "@clerk/nextjs/server";
+import { runCorsMiddleware } from "@/utils/cors";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -11,6 +12,15 @@ const pool = new Pool({
 const db = drizzle(pool);
 
 export async function GET(req: NextRequest) {
+  const res = new NextResponse();
+
+  try {
+    await runCorsMiddleware(req, res);
+  } catch (error) {
+    console.error("CORS error:", error);
+    return NextResponse.json({ error: "CORS error" }, { status: 500 });
+  }
+
   const { userId } = getAuth(req);
 
   if (!userId) {
@@ -34,6 +44,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const res = new NextResponse();
+
+  // Run CORS middleware
+  try {
+    await runCorsMiddleware(req, res);
+  } catch (error) {
+    console.error("CORS error:", error);
+    return NextResponse.json({ error: "CORS error" }, { status: 500 });
+  }
+
   const { userId } = getAuth(req);
 
   console.log("server", userId);
