@@ -8,7 +8,7 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Hamburger icon (top-left corner on small screens) */}
+      {/* hamburger menu */}
       <button
         className="md:hidden absolute top-4 left-4 z-50"
         onClick={() => setIsOpen(!isOpen)}
@@ -20,6 +20,8 @@ export default function Sidebar() {
           viewBox="0 0 25 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          className={`${isOpen ? 'stroke-black' : 'stroke-gray-800'}`}
+
         >
           <path
             d="M3.5625 6C3.5625 5.58579 3.89829 5.25 4.3125 5.25H20.3125C20.7267 5.25 21.0625 5.58579 21.0625 6C21.0625 6.41421 20.7267 6.75 20.3125 6.75L4.3125 6.75C3.89829 6.75 3.5625 6.41422 3.5625 6Z"
@@ -44,7 +46,12 @@ export default function Sidebar() {
       >
         {/* Logo / User Section */}
         <div className="flex flex-col items-center mb-8">
-          <h1 className="text-black font-bold text-4xl mb-4">👤</h1>
+          <h1 className="text-black font-bold text-4xl mb-4">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0 0 0)">
+          <path d="M7.65625 6.34459C7.65625 3.94514 9.60139 2 12.0008 2C14.4003 2 16.3454 3.94514 16.3454 6.34459C16.3454 8.74404 14.4003 10.6892 12.0008 10.6892C9.60139 10.6892 7.65625 8.74404 7.65625 6.34459Z" fill="#005dd8"></path>
+          <path d="M3.68359 17.439C3.68359 14.5395 6.0341 12.189 8.93359 12.189H15.0686C17.9681 12.189 20.3186 14.5395 20.3186 17.439V18.75C20.3186 19.9926 19.3113 21 18.0686 21H5.93359C4.69095 21 3.68359 19.9926 3.68359 18.75V17.439Z" fill="#005dd8"></path>
+          </svg>
+          </h1>
           <h3 className="text-xl text-black font-semibold">
             {user?.fullName || "Guest"}
           </h3>
