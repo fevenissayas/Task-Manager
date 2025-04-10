@@ -77,15 +77,16 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 }
 
 // DELETE /api/tasks/:id
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { userId } = getAuth(req); // Authenticate the user
-    const taskId = parseInt(params.id, 10);
+    const resolvedParams = await context.params;
+        const taskId = parseInt(resolvedParams.id, 10);
 
+    const { userId } = getAuth(req);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
+      
     const task = await db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1);
     if (!task.length) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
