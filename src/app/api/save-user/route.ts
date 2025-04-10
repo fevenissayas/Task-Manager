@@ -3,9 +3,13 @@ import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { runCorsMiddleware } from "@/utils/cors";
 
 export async function POST(req: NextRequest) {
   try {
+    const res = new NextResponse();
+    await runCorsMiddleware(req, res);
+
     const { userId } = await auth();
     const { email, name } = await req.json();
 

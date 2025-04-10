@@ -5,6 +5,8 @@ import { tasks } from "@/db/schema";
 import { eq } from "drizzle-orm/expressions";
 import { getAuth } from "@clerk/nextjs/server";
 import { title } from "process";
+import { runCorsMiddleware } from '@/utils/cors';
+
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -14,6 +16,9 @@ const db = drizzle(pool);
 // GET /api/tasks/:id
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const res = new NextResponse();
+    await runCorsMiddleware(req, res);
+    
     const resolvedParams = await context.params;
     const taskId = parseInt(resolvedParams.id, 10); //convert id to number
 
@@ -32,8 +37,10 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 // PUT /api/tasks/:id
 export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const res = new NextResponse();
+    await runCorsMiddleware(req, res);
+    
     const resolvedParams = await context.params;
-
     const taskId = parseInt(resolvedParams.id, 10);
     // console.log(taskId);
 
@@ -78,6 +85,9 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 // DELETE /api/tasks/:id
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const res = new NextResponse();
+    await runCorsMiddleware(req, res);
+
     const resolvedParams = await context.params;
         const taskId = parseInt(resolvedParams.id, 10);
 

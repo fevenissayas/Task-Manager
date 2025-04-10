@@ -12,6 +12,7 @@
     "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/nextjs": "^6.14.1",
     "@supabase/supabase-js": "^2.49.4",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "drizzle-kit": "^0.30.6",
     "drizzle-orm": "^0.41.0",
