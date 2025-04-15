@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import Sidebar from "../components/Sidebar";
-import Footer from "../components/footer/footer";
 import { useUser } from "@clerk/nextjs";
 import UserSync from "../components/UserSync";
 
@@ -40,7 +39,6 @@ export default function ClientLayoutWrapper({ children }) {
             <main className="w-full p-6">{children}</main>
           </div>
 
-          <Footer />
         </>
       )}
     </>

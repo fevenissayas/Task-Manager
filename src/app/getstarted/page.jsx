@@ -1,15 +1,6 @@
-"use client";
+import Link from "next/link";
 
-import { useRouter } from "next/navigation";
-import React from "react";
-
-export default function GetStarted() {
-  const router = useRouter();
-
-  const handleSignUpRedirect = () => {
-    router.push("/sign-up");
-  };
-
+export default function GetStartedPage() {
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-white px-4">
       <div className="text-center space-y-6 max-w-xl">
@@ -22,12 +13,12 @@ export default function GetStarted() {
           Hope you enjoy exploring it as much as I enjoyed building it! :)
         </p>
         <br />
-        <button
-          className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
-          onClick={handleSignUpRedirect}
+        <Link
+          href="/sign-up"
+          className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 inline-block"
         >
           Get Started
-        </button>
+        </Link>
       </div>
     </main>
   );
