@@ -14,7 +14,7 @@ export default function GetStartedPage() {
         </p>
         <br />
         <Link
-          href="/sign-up"
+          href="/signup"
           className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 inline-block"
         >
           Get Started
