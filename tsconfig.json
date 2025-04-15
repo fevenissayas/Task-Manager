@@ -32,7 +32,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/layout.tsx", "src/app/signin/page.jsx", "src/app/api/clerk-user/route.js", "src/app/ClientLayoutWrapper.jsx", "src/app/my_tasks/page.tsx"  ],
+, "src/app/layout.tsx", "src/app/signin/page.jsx", "src/app/api/clerk-user/route.js", "src/app/ClientLayoutWrapper.jsx", "src/app/my_tasks/page.tsx", "src/app/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]
