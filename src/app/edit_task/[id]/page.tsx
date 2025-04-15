@@ -1,5 +1,16 @@
+import { Metadata } from "next";
 import UpdateTaskPage from "@/components/UpdateTaskPage";
 
-export default function Page({ params }: { params: { id: string } }) {
+interface EditTaskPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export const metadata: Metadata = {
+  title: "Edit Task",
+};
+
+export default function Page({ params }: EditTaskPageProps) {
   return <UpdateTaskPage taskId={params.id} />;
 }
